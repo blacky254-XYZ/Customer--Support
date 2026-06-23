@@ -8,82 +8,146 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-        }
-        .dashboard-bg {
-            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .dashboard-bg { background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%); }
+        .glow-red { box-shadow: 0 0 40px rgba(220, 38, 38, 0.2); }
+        .glow-green { box-shadow: 0 0 30px rgba(34, 197, 94, 0.2); }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100">
+
     <!-- Navigation -->
-    <nav class="bg-black border-b border-zinc-800">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav class="bg-black border-b border-zinc-800 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto px-8 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-red-600 rounded-xl flex items-center justify-center text-white font-bold">AD</div>
-                <span class="font-semibold text-2xl">Admin Dashboard</span>
+                <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">AD</div>
+                <span class="font-bold text-2xl tracking-tight">Admin Dashboard</span>
             </div>
-            <div class="flex items-center gap-4">
-                <a href="index.html" class="px-5 py-2 text-sm font-medium hover:bg-zinc-900 rounded-full transition-colors">Back to Support</a>
-                <a href="https://wa.me/447853169761" target="_blank" class="px-5 py-2 text-sm font-semibold bg-green-600 hover:bg-green-500 rounded-full transition-colors flex items-center gap-2">
-                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="px-5 py-2.5 text-sm font-medium hover:bg-zinc-900 rounded-full transition-colors border border-zinc-800">
+                    <i class="fa-solid fa-arrow-left mr-2"></i>Back to Support
                 </a>
-                <button onclick="logout()" class="px-5 py-2 text-sm font-medium bg-red-600 hover:bg-red-500 rounded-full transition-colors">Logout</button>
+                <a href="https://wa.me/447853169761" target="_blank"
+                   class="px-5 py-2.5 text-sm font-bold bg-green-600 hover:bg-green-500 rounded-full transition-colors flex items-center gap-2 glow-green">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp
+                </a>
+                <button onclick="logout()"
+                        class="px-5 py-2.5 text-sm font-medium bg-red-600 hover:bg-red-500 rounded-full transition-colors">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Login Section -->
-    <div id="loginSection" class="dashboard-bg py-20">
-        <div class="max-w-md mx-auto px-6">
-            <div class="bg-zinc-900 rounded-3xl p-12 border border-zinc-800">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center text-white font-bold text-3xl mx-auto mb-4">🔐</div>
-                    <h1 class="text-3xl font-semibold">Admin Access</h1>
-                    <p class="text-zinc-400 mt-2">Enter your password to continue</p>
+    <!-- Login Section — Full screen, centered, big -->
+    <div id="loginSection" class="dashboard-bg min-h-screen flex items-center justify-center py-16 px-6">
+        <div class="w-full max-w-xl">
+            <!-- Login Card -->
+            <div class="bg-zinc-900 rounded-3xl p-12 border border-zinc-800 glow-red shadow-2xl">
+                <div class="text-center mb-10">
+                    <div class="w-24 h-24 bg-red-600 rounded-3xl flex items-center justify-center text-5xl mx-auto mb-6 shadow-lg">🔐</div>
+                    <h1 class="text-4xl font-extrabold mb-3 tracking-tight">Admin Access</h1>
+                    <p class="text-zinc-400 text-lg">Secure dashboard — enter your password below</p>
                 </div>
-                
-                <div class="space-y-4">
+
+                <div class="space-y-5">
                     <div>
-                        <input type="password" id="adminPassword" placeholder="Enter Admin Password" 
-                               class="w-full bg-zinc-950 border border-zinc-700 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-2xl px-5 py-4 outline-none transition-all text-zinc-100" 
+                        <label class="block text-zinc-300 font-semibold mb-3 text-lg">
+                            <i class="fa-solid fa-key mr-2 text-red-500"></i>Admin Password
+                        </label>
+                        <input type="password" id="adminPassword"
+                               placeholder="Enter your admin password"
+                               class="w-full bg-zinc-950 border-2 border-zinc-700 focus:border-red-500 focus:ring-2 focus:ring-red-500/30 rounded-2xl px-6 py-5 text-xl outline-none transition-all text-zinc-100 placeholder-zinc-600"
                                onkeypress="if(event.key === 'Enter') login()">
                     </div>
-                    <button onclick="login()" 
-                            class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-4 rounded-2xl text-lg transition-all">
-                        <i class="fa-solid fa-lock-open mr-2"></i> Unlock Dashboard
+                    <button onclick="login()"
+                            class="w-full bg-red-600 hover:bg-red-500 active:scale-[0.985] text-white font-bold py-5 rounded-2xl text-xl transition-all shadow-lg">
+                        <i class="fa-solid fa-lock-open mr-3"></i>Unlock Dashboard
                     </button>
                 </div>
-                
-                <p class="text-center text-zinc-500 text-sm mt-6">
-                    Unauthorized access is prohibited
+
+                <div id="loginError" class="hidden mt-4 p-4 bg-red-900/50 border border-red-700 rounded-xl text-center text-red-300 font-medium">
+                    <i class="fa-solid fa-triangle-exclamation mr-2"></i>Invalid password. Please try again.
+                </div>
+
+                <!-- WhatsApp Contact in Login -->
+                <div class="mt-10 pt-8 border-t border-zinc-800">
+                    <p class="text-center text-zinc-500 text-sm mb-4">Need help accessing the dashboard?</p>
+                    <a href="https://wa.me/447853169761" target="_blank"
+                       class="flex items-center justify-center gap-3 bg-green-700 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-lg transition-all">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i> Contact Us on WhatsApp
+                    </a>
+                </div>
+
+                <p class="text-center text-zinc-600 text-sm mt-6">
+                    <i class="fa-solid fa-shield-halved mr-1"></i> Unauthorized access is strictly prohibited
                 </p>
             </div>
         </div>
     </div>
 
-    <!-- Dashboard Section -->
-    <div id="dashboardSection" style="display:none;" class="py-12">
-        <div class="max-w-7xl mx-auto px-6">
-            <!-- Header -->
-            <div class="mb-8">
-                <h1 class="text-4xl font-bold mb-2">Support Tickets</h1>
-                <p class="text-zinc-400 text-lg">Manage all customer support requests</p>
+    <!-- Dashboard Section — Wide, spacious, full view -->
+    <div id="dashboardSection" style="display:none;" class="min-h-screen py-10 bg-zinc-950">
+        <div class="max-w-screen-2xl mx-auto px-8">
+
+            <!-- Dashboard Header -->
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="text-5xl font-extrabold mb-2 tracking-tight">Support Tickets</h1>
+                    <p class="text-zinc-400 text-xl">Manage all incoming customer support requests</p>
+                </div>
+                <!-- Quick WhatsApp CTA -->
+                <a href="https://wa.me/447853169761" target="_blank"
+                   class="hidden lg:flex items-center gap-3 bg-green-700 hover:bg-green-600 text-white font-bold px-8 py-4 rounded-2xl text-lg transition-all glow-green">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i> WhatsApp Support
+                </a>
             </div>
 
-            <!-- Controls -->
-            <div class="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-8 flex items-center justify-between">
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-ticket text-blue-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-zinc-400 text-sm">Total Tickets</p>
+                        <p id="totalCount" class="text-3xl font-bold text-blue-400">—</p>
+                    </div>
+                </div>
+                <div class="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-yellow-600/20 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-clock text-yellow-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-zinc-400 text-sm">Pending</p>
+                        <p id="pendingCount" class="text-3xl font-bold text-yellow-400">—</p>
+                    </div>
+                </div>
+                <div class="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-green-600/20 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-check-circle text-green-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-zinc-400 text-sm">Resolved</p>
+                        <p id="resolvedCount" class="text-3xl font-bold text-green-400">—</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Row -->
+            <div class="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-8 flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
-                    <button onclick="loadComplaints()" class="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl font-medium transition-all">
-                        <i class="fa-solid fa-sync"></i> Refresh
+                    <button onclick="loadComplaints()"
+                            class="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl font-semibold text-lg transition-all">
+                        <i class="fa-solid fa-rotate-right"></i> Refresh
                     </button>
                     <div id="ticketCount" class="text-lg font-semibold text-zinc-300"></div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-zinc-400">Filter:</span>
-                    <select id="statusFilter" onchange="loadComplaints()" class="bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2 text-zinc-100">
+                <div class="flex items-center gap-3">
+                    <span class="text-zinc-400 font-medium">Filter by status:</span>
+                    <select id="statusFilter" onchange="loadComplaints()"
+                            class="bg-zinc-950 border-2 border-zinc-700 focus:border-blue-500 rounded-xl px-5 py-3 text-zinc-100 text-base font-medium">
                         <option value="">All Statuses</option>
                         <option value="Pending">Pending</option>
                         <option value="In Progress">In Progress</option>
@@ -92,10 +156,51 @@
                 </div>
             </div>
 
-            <!-- Tickets List -->
-            <div id="complaintsList" class="grid gap-6"></div>
+            <!-- Tickets Grid -->
+            <div id="complaintsList" class="grid grid-cols-1 xl:grid-cols-2 gap-8"></div>
+
+            <!-- Contact Us Section -->
+            <div class="mt-16 bg-zinc-900 rounded-3xl p-10 border border-zinc-800">
+                <h2 class="text-3xl font-bold mb-2">Contact Us</h2>
+                <p class="text-zinc-400 text-lg mb-8">Reach your support team directly through these channels</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="https://wa.me/447853169761" target="_blank"
+                       class="flex items-center gap-5 p-6 bg-green-900/30 border-2 border-green-700 hover:border-green-500 hover:bg-green-900/50 rounded-2xl transition-all group">
+                        <div class="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-brands fa-whatsapp text-3xl text-white"></i>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-green-400 group-hover:text-green-300">WhatsApp</div>
+                            <div class="text-zinc-400 mt-1">+44 7853 169761</div>
+                            <div class="text-sm text-green-500 mt-1">Response under 5 minutes</div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right ml-auto text-green-600 group-hover:text-green-400 text-xl"></i>
+                    </a>
+                    <a href="tel:+447853169761"
+                       class="flex items-center gap-5 p-6 bg-blue-900/30 border-2 border-blue-700 hover:border-blue-500 hover:bg-blue-900/50 rounded-2xl transition-all group">
+                        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-phone text-3xl text-white"></i>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-blue-400 group-hover:text-blue-300">Call Us</div>
+                            <div class="text-zinc-400 mt-1">+44 7853 169761</div>
+                            <div class="text-sm text-blue-500 mt-1">Available 9am – 6pm</div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right ml-auto text-blue-600 group-hover:text-blue-400 text-xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="pb-16"></div>
         </div>
     </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/447853169761" target="_blank"
+       class="fixed bottom-8 right-8 z-50 w-16 h-16 bg-green-600 hover:bg-green-500 rounded-full flex items-center justify-center shadow-2xl transition-all hover:scale-110"
+       title="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp text-white text-3xl"></i>
+    </a>
 
     <script src="supabase.js"></script>
     <script src="admin.js"></script>
