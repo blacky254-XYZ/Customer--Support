@@ -23,12 +23,10 @@ document.getElementById("supportForm").addEventListener("submit", async (e) => {
     let { error } = await client.from("complaints").insert([data]);
 
     if (!error) {
-      // Submit to Formspree for email notification
-      await fetch("https://formspree.io/f/mojzklze", {
+      // Submit to Formspree for email notification to admin
+      fetch("https://formspree.io/f/mojzklze", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: data.full_name,
           email: data.email,
@@ -37,21 +35,22 @@ document.getElementById("supportForm").addEventListener("submit", async (e) => {
           category: data.category,
           message: data.message,
           reference_number: ref,
-          _subject: `New Support Request - Case ${ref}`
+          _subject: `🎫 New Support Request — Case ${ref}`
         })
-      }).catch(err => console.log("Email notification sent"));
+      }).catch(err => console.error("Formspree notification error:", err));
 
-      // Show success message
+      // Show success message with prominent case reference
       document.getElementById("supportForm").style.display = "none";
       document.getElementById("successMessage").classList.remove("hidden");
-      document.getElementById("successText").innerHTML = `Thank you! Your case number is <strong>${ref}</strong>. We'll contact you shortly.`;
-      
-      // Reset form after 3 seconds
+      document.getElementById("caseRefDisplay").textContent = ref;
+      document.getElementById("successText").textContent = "Save your case reference. We'll contact you within 24 hours (usually much faster).";
+
+      // Reset after 8 seconds
       setTimeout(() => {
         document.getElementById("supportForm").reset();
         document.getElementById("supportForm").style.display = "block";
         document.getElementById("successMessage").classList.add("hidden");
-      }, 3000);
+      }, 8000);
     } else {
       alert("Error submitting complaint: " + error.message);
     }
