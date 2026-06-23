@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customer Support</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h1>Customer Support Center</h1>
+
+  <form id="complaintForm">
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="text" id="phone" placeholder="Phone" required>
+    <input type="text" id="company" placeholder="Company">
+
+    <select id="category">
+      <option>Booking Issue</option>
+      <option>Payment Issue</option>
+      <option>Service Complaint</option>
+    </select>
+
+    <textarea id="message" placeholder="Describe your issue" required></textarea>
+
+    <button type="submit">Submit Complaint</button>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+<a class="whatsapp" href="https://wa.me/447853169761" target="_blank">WhatsApp</a>
+
+<script src="supabase.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
